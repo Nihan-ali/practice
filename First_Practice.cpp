@@ -2,6 +2,8 @@
 
 using namespace std;
 #define print(x) cout << #x << " = " << x << endl
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
 
 int main()
 {int t;
