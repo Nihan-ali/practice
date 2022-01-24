@@ -4,8 +4,6 @@ using namespace std;
 #define endl '\n'
 #define output(x) cout << x << endl
 #define print(x) cout << #x << " = " << x << endl
-#define yes cout<<"YES\n"
-#define no cout<<"NO\n"
 #define pi acos(-1)
 
 int bigmod(long long n, long long k, const int mod) {
