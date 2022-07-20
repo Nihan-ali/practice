@@ -7,32 +7,33 @@ using namespace std;
 #define yes cout<<"YES\n"
 #define no cout<<"NO\n"
 #define pi acos(-1)
-#define sz 100000
-vector<int>adj[sz+5];
+#define sz 100005
+#define inf 1e18
+
+vector<int>adj[sz];
 map<pair<int,int>,ll>mp;
-priority_queue<int>pq;
-ll dis[sz+5],inf=1e18;
-int parent[sz+5];
-int n,m;
+ll dis[sz];
+int parent[sz];
+priority_queue<pair<ll,int>,vector<pair<ll,int>>,greater<pair<ll,int>>>pq;
 
 void dijkstra(int source)
 {
     parent[source]=-1;
-    for(int i=0;i<=n;i++)
+    for(int i=0;i<sz;i++)
         dis[i]=inf;
     dis[source]=0;
-    pq.push(source);
+    pq.push({0,source}); 
     while(!pq.empty())
     {
-        int u=pq.top();
+        ll cost=pq.top().first; 
+        int u=pq.top().second;
         pq.pop();
         for(auto v:adj[u])
         {
-            ll cost = mp[{u,v}];
-            if(dis[u]+cost<dis[v])
+            if(mp[{u,v}]+cost<dis[v])
             {
-                dis[v]=dis[u]+cost;
-                pq.push(v);
+                dis[v]=mp[{u,v}]+cost;
+                pq.push({dis[v],v});
                 parent[v]=u;
             }
         }
@@ -41,43 +42,39 @@ void dijkstra(int source)
 
 int main()
 {
-    cin>>n>>m;
-    int i,j;
-    for(i=1;i<=m;i++)
+    int nodes,edges,i,j; 
+    cin>>nodes>>edges;
+    while(edges--)
     {
         int u,v;
-        ll weight;
-        cin>>u>>v>>weight;
+        ll w;
+        cin>>u>>v>>w;
         adj[u].push_back(v);
         adj[v].push_back(u);
-        mp[{u,v}]=weight;
-        mp[{v,u}]=weight;
+        mp[{u,v}]=w;
+        mp[{v,u}]=w;
     }
-    int source=1,des=n;
+    int source,des;
+    source=1;des=nodes;
     dijkstra(source);
-    for(i=1;i<n;i++)
-    {
-        cout<<"dis from "<<source<<" to v = "<<i<<" is "<<dis[i]<<endl;
-    }
-    
-    if(dis[n]==inf)
+    if(dis[des]>=inf)
     {
         cout<<-1<<endl;
     }
     else
     {
+        //cout<<"Minimum distance from "<<source<<" to "<<des<<" is = "<<dis[des]<<endl;
         vector<int>path;
-        while(parent[des]!=-1)
+        while(des!=-1)
         {
             path.push_back(des);
             des=parent[des];
+            
         }
-        path.push_back(source);
         reverse(path.begin(), path.end());
-        for(auto node:path)
-        {
-            cout<<node<<' ';
-        }cout<<endl;
-   }
+            for(auto x:path)
+                cout<<x<<' ';
+            cout<<endl;
+    }
     return 0;
 }
